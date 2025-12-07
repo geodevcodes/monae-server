@@ -90,8 +90,8 @@ mongoose
   .then(() => {
     console.log("Connected to MongoDB!");
     app.listen(PORT, () => {
-      console.log(`geodevcodes endpoints is running on Port ${PORT} 🚀`);
-      logger.info(`geodevcodes endpoints is running on Port ${PORT} 🚀`);
+      console.log(`Monae endpoints is running on Port ${PORT} 🚀`);
+      logger.info(`Monae endpoints is running on Port ${PORT} 🚀`);
     });
   })
   .catch((error) => {
