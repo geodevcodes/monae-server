@@ -1,17 +1,16 @@
-const nodemailer = require("nodemailer");
+import nodemailer, { Transporter } from "nodemailer";
 
-const sendMail = () => {
+export const sendMail = (): Transporter => {
   // For Ordinary Gmail account
-  let transporter = nodemailer.createTransport({
+  const transporter: Transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465, // Use 465 for SSL or 587 for TLS
-    secure: true, // Set to true if using port 465 (SSL)
+    port: 465, // SSL
+    secure: true,
     auth: {
       user: process.env.MAIL_EMAIL,
       pass: process.env.MAIL_PASSWORD,
     },
   });
+
   return transporter;
 };
-
-module.exports = { sendMail };

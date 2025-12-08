@@ -1,4 +1,4 @@
-const VERIFICATION_EMAIL_TEMPLATE = `
+export const VERIFICATION_EMAIL_TEMPLATE = `
 <!DOCTYPE html>
 <html>
 <body style="font-family: Arial; padding:20px;">
@@ -11,7 +11,7 @@ const VERIFICATION_EMAIL_TEMPLATE = `
 </html>
 `;
 
-const WELCOME_EMAIL_TEMPLATE = `
+export const WELCOME_EMAIL_TEMPLATE = `
 <!DOCTYPE html>
 <html>
 <body style="font-family: Arial; padding:20px;">
@@ -23,7 +23,7 @@ const WELCOME_EMAIL_TEMPLATE = `
 `;
 
 
-const PASSWORD_RESET_REQUEST_TEMPLATE = `
+export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 <!DOCTYPE html>
 <html>
 <body style="font-family: Arial; padding:20px;">
@@ -38,7 +38,7 @@ const PASSWORD_RESET_REQUEST_TEMPLATE = `
 `;
 
 
-const PASSWORD_RESET_SUCCESS_TEMPLATE = `
+export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 <!DOCTYPE html>
 <html>
 <body style="font-family: Arial; padding:20px;">

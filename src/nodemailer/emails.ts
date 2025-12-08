@@ -1,13 +1,18 @@
-const {
+import {
   VERIFICATION_EMAIL_TEMPLATE,
   WELCOME_EMAIL_TEMPLATE,
   PASSWORD_RESET_REQUEST_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,
-} = require("./emailTemplates.ts");
-const { sendMail } = require("./sendMail.ts");
+} from "./emailTemplates";
+import { sendMail } from "./sendMail";
+import { SentMessageInfo, Transporter } from "nodemailer";
 
 // ===================== VERIFICATION EMAIL =====================
-const sendVerificationEmail = async (email, name, verificationToken) => {
+export const sendVerificationEmail = async (
+  email: string,
+  name: string,
+  verificationToken: string
+): Promise<void> => {
   const recipient = email;
 
   try {
@@ -16,7 +21,7 @@ const sendVerificationEmail = async (email, name, verificationToken) => {
       verificationToken
     ).replace("{name}", name);
 
-    const transporter = sendMail();
+    const transporter: Transporter = sendMail();
 
     const mailOptions = {
       from: `"Monae" <${process.env.MAIL_EMAIL}>`,
@@ -32,14 +37,17 @@ Best regards,
 The Monae Team`,
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Verification Email sent successfully");
-        console.log(info);
+    transporter.sendMail(
+      mailOptions,
+      (error: Error | null, info: SentMessageInfo) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Verification Email sent successfully");
+          console.log(info);
+        }
       }
-    });
+    );
   } catch (error) {
     console.error(`Error sending verification`, error);
     throw new Error(`Error sending verification email: ${error}`);
@@ -47,7 +55,10 @@ The Monae Team`,
 };
 
 // ===================== WELCOME EMAIL =====================
-const sendWelcomeEmail = async (email, name) => {
+export const sendWelcomeEmail = async (
+  email: string,
+  name: string
+): Promise<void> => {
   const recipient = email;
 
   try {
@@ -56,7 +67,7 @@ const sendWelcomeEmail = async (email, name) => {
       email
     ).replace("{name}", name);
 
-    const transporter = sendMail();
+    const transporter: Transporter = sendMail();
 
     const mailOptions = {
       from: `"Monae" <${process.env.MAIL_EMAIL}>`,
@@ -65,13 +76,16 @@ const sendWelcomeEmail = async (email, name) => {
       html: emailBody,
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(info);
+    transporter.sendMail(
+      mailOptions,
+      (error: Error | null, info: SentMessageInfo) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(info);
+        }
       }
-    });
+    );
   } catch (error) {
     console.error(`Error sending welcome email`, error);
     throw new Error(`Error sending welcome email: ${error}`);
@@ -79,13 +93,16 @@ const sendWelcomeEmail = async (email, name) => {
 };
 
 // ===================== PASSWORD RESET EMAIL =====================
-const sendPasswordResetEmail = async (email, name) => {
+export const sendPasswordResetEmail = async (
+  email: string,
+  name: string
+): Promise<void> => {
   const recipient = email;
 
   try {
     const emailBody = PASSWORD_RESET_REQUEST_TEMPLATE.replace("{name}", name);
 
-    const transporter = sendMail();
+    const transporter: Transporter = sendMail();
 
     const mailOptions = {
       from: `"Monae" <${process.env.MAIL_EMAIL}>`,
@@ -94,14 +111,17 @@ const sendPasswordResetEmail = async (email, name) => {
       html: emailBody,
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Password reset mail sent successfully");
-        console.log(info);
+    transporter.sendMail(
+      mailOptions,
+      (error: Error | null, info: SentMessageInfo) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Password reset mail sent successfully");
+          console.log(info);
+        }
       }
-    });
+    );
   } catch (error) {
     console.error(`Error sending password reset email`, error);
     throw new Error(`Error sending password reset email: ${error}`);
@@ -109,13 +129,16 @@ const sendPasswordResetEmail = async (email, name) => {
 };
 
 // ===================== PASSWORD RESET SUCCESS EMAIL =====================
-const sendResetSuccessEmail = async (email, name) => {
+export const sendResetSuccessEmail = async (
+  email: string,
+  name: string
+): Promise<void> => {
   const recipient = email;
 
   try {
     const emailBody = PASSWORD_RESET_SUCCESS_TEMPLATE.replace("{name}", name);
 
-    const transporter = sendMail();
+    const transporter: Transporter = sendMail();
 
     const mailOptions = {
       from: `"Monae" <${process.env.MAIL_EMAIL}>`,
@@ -124,23 +147,19 @@ const sendResetSuccessEmail = async (email, name) => {
       html: emailBody,
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Password reset success email sent");
-        console.log(info);
+    transporter.sendMail(
+      mailOptions,
+      (error: Error | null, info: SentMessageInfo) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Password reset success email sent");
+          console.log(info);
+        }
       }
-    });
+    );
   } catch (error) {
     console.error(`Error sending password reset success email`, error);
     throw new Error(`Error sending password reset success email: ${error}`);
   }
-};
-
-module.exports = {
-  sendVerificationEmail,
-  sendWelcomeEmail,
-  sendPasswordResetEmail,
-  sendResetSuccessEmail,
 };
