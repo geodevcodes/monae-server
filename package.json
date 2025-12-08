@@ -16,6 +16,7 @@
   "dependencies": {
     "@types/morgan": "^1.9.10",
     "@types/morgan-json": "^1.1.3",
+    "@types/multer": "^2.0.0",
     "axios": "^1.13.2",
     "body-parser": "^2.2.1",
     "compression": "^1.8.1",
