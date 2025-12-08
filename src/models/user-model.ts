@@ -1,31 +1,53 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    googleId: String,
-    githubId: String,
-    fullName: String,
+    fullName: {
+      type: String,
+      default: "",
+    },
     email: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
     },
-    phoneNumber: {
-      type: Number,
-      unique: true,
-      sparse: true,
-    },
-    avatarImage: {
+    password: {
       type: String,
-    },
-    lastLogin: {
-      type: Date,
-      default: Date.now,
+      required: true,
     },
     role: {
       type: String,
       enum: ["User", "Admin"],
       default: "User",
+    },
+    avatarImage: {
+      type: String,
+      default: "",
+    },
+    googleId: {
+      type: String,
+      default: "",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+    },
+    verificationTokenExpiresAt: {
+      type: Date,
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpiresAt: {
+      type: Date,
+    },
+    lastLogin: {
+      type: Date,
+      default: Date.now,
     },
     active: {
       type: Boolean,
