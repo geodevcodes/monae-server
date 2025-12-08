@@ -2,9 +2,24 @@ import mongoose from "mongoose";
 
 const monoSchema = new mongoose.Schema(
   {
-    userId: { type: String, required: false },
-    monoAccountId: { type: String, required: true, unique: true },
-    institution: { type: String, required: false },
+    monoAccountId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    monoCustomerId: {
+      type: String,
+      required: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    institution: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
