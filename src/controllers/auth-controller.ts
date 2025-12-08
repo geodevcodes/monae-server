@@ -3,6 +3,12 @@ import User from "../models/user-model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+const {
+  sendVerificationEmail,
+  sendWelcomeEmail,
+  sendPasswordResetEmail,
+  sendResetSuccessEmail,
+} = require("../nodemailer/emails");
 
 const SECRET_KEY = process.env.SECRET_KEY!;
 
@@ -12,9 +18,8 @@ export const createUser = asyncHandler(async (req: any, res: any) => {
     const { email, password, role } = req.body;
 
     const checkEmail = await User.findOne({ email });
-    if (checkEmail) {
+    if (checkEmail)
       return res.status(401).json({ message: "Email already exists" });
-    }
 
     if (!password) {
       return res.status(400).json({ message: "Password is required" });
@@ -35,9 +40,11 @@ export const createUser = asyncHandler(async (req: any, res: any) => {
       isVerified: false,
     });
 
+    await sendVerificationEmail(email, email, verificationToken);
+
     return res.status(200).json({
       success: true,
-      message: `Verification code sent to ${email}`,
+      message: "Verification code sent to your email",
       data: { email: newUser.email },
     });
   } catch (error) {
@@ -66,6 +73,8 @@ export const verifyEmail = asyncHandler(async (req: any, res: any) => {
     user.verificationToken = undefined;
     user.verificationTokenExpiresAt = undefined;
     await user.save();
+
+    await sendWelcomeEmail(user.email, `Monae`);
 
     return res.status(200).json({
       success: true,
@@ -110,6 +119,8 @@ export const resendVerificationOTP = asyncHandler(
       user.verificationTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
       await user.save();
 
+      // Send the new OTP to the user's email
+      await sendVerificationEmail(user.email, `Monae`, newVerificationToken);
 
       return res.status(200).json({
         success: true,
@@ -173,6 +184,8 @@ export const forgotPassword = asyncHandler(async (req: any, res: any) => {
     user.resetPasswordExpiresAt = new Date(Date.now() + 60 * 60 * 1000);
     await user.save();
 
+    // send email
+    await sendPasswordResetEmail(user.email, `Monae`);
 
     return res.status(200).json({
       success: true,
@@ -205,6 +218,8 @@ export const resetPassword = asyncHandler(async (req: any, res: any) => {
     user.resetPasswordExpiresAt = undefined;
 
     await user.save();
+
+    await sendResetSuccessEmail(user.email, `Monae`);
 
     return res.status(200).json({
       success: true,
