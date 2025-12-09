@@ -66,7 +66,7 @@ app.use(
 );
 
 // set up routes
-app.use("/auth", authRoute);
+app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/mono", monoRoute);
 app.use("/api/v1/budgets", budgetRoute);
