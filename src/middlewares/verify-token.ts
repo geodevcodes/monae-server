@@ -6,7 +6,7 @@ interface CustomRequest extends Request {
   userRole?: string;
 }
 
-const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
+export const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
   const token = req.headers?.authorization?.split(" ")[1];
   const secretKey = process.env.SECRET_KEY;
 
@@ -38,7 +38,7 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
   }
 };
 
-const isAdminRoute = (
+export const isAdminRoute = (
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -84,4 +84,3 @@ const isAdminRoute = (
   }
 };
 
-export default { verifyToken, isAdminRoute };

@@ -11,6 +11,7 @@ import cookieSession from "cookie-session";
 import authRoute from "./routes/auth-route";
 import userRoute from "./routes/user-route";
 import monoRoute from "./routes/mono-route";
+import budgetRoute from "./routes/budget-route";
 
 const app = express();
 const COOKIE_SECRET_KEY = process.env.COOKIE_SECRET_KEY;
@@ -68,6 +69,8 @@ app.use(
 app.use("/auth", authRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/mono", monoRoute);
+app.use("/api/v1/budgets", budgetRoute);
+
 
 app.get("/", (req, res) => {
   logger.info(

@@ -1,6 +1,6 @@
 import axios from "axios";
 import MonoModel from "../models/mono-model";
-const asyncHandler = require("express-async-handler");
+import asyncHandler from "express-async-handler";
 
 if (!process.env.MONO_SECRET_KEY) {
   throw new Error("MONO_SECRET_KEY is missing");
