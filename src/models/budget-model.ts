@@ -15,6 +15,7 @@ const budgetSchema = new mongoose.Schema(
     budgetAmount: {
       type: Number,
       required: true,
+      min: 1,
     },
     budgetDuration: {
       type: String,
@@ -29,18 +30,11 @@ const budgetSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      //   type: [String],
-      //   default: [],
-      //   required: true,
-    },
-    budgetProgress: {
-      type: Number,
-      default: 0,
     },
   },
   { timestamps: true }
 );
 
-const BudgetModel = mongoose.model("budget", budgetSchema);
+const BudgetModel = mongoose.model("Budget", budgetSchema);
 
 export default BudgetModel;
