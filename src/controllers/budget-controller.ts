@@ -96,7 +96,7 @@ export const getBudgets = asyncHandler(async (req: any, res: any) => {
         ...budget.toObject(),
         totalExpenses,
         remainingBudget,
-        budgetProgress: progress,
+        budgetProgress: Number(progress.toFixed(2)),
       };
     });
 
@@ -116,6 +116,7 @@ export const getBudgets = asyncHandler(async (req: any, res: any) => {
 
     const meta = {
       totalBudgets,
+      totalBudgetAmount,
       totalItems: totalBudgets,
       limit,
       pageNumber,

@@ -4,7 +4,7 @@ import ExpenseModel from "../models/expense-model";
 // Create an Expense
 export const createExpense = asyncHandler(async (req: any, res: any) => {
   try {
-    const { userId } = req;
+    const userId = req.userId;
     const { budgetId, expenseAmount } = req.body;
 
     // 1. Create expense
