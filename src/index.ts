@@ -26,13 +26,15 @@ if (!MONGO_URL) {
   throw new Error("MONGO_URL is missing in environment variables.");
 }
 
-const corsOptions = {
-  origin: "*",
-  optionsSuccessStatus: 200,
-  credentials: true,
-};
+// FULL OPEN CORS FIX
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(httpLogger);
