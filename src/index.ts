@@ -16,11 +16,6 @@ import expenseRoute from "./routes/expense-route";
 
 const app = express();
 const COOKIE_SECRET_KEY = process.env.COOKIE_SECRET_KEY;
-const FRONTEND_URL =
-  process.env.NODE_ENV === "production"
-    ? process.env.FRONTEND_URL_PRODUCTION
-    : process.env.FRONTEND_URL_DEVELOPMENT;
-
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT;
 
@@ -32,7 +27,7 @@ if (!MONGO_URL) {
 }
 
 const corsOptions = {
-  origin: FRONTEND_URL,
+  origin: "*",
   optionsSuccessStatus: 200,
   credentials: true,
 };
