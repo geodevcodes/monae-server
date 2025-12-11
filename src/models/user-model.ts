@@ -73,6 +73,31 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    
+    // PERSONALISATION OBJECT
+    personalisation: {
+      language: {
+        type: String,
+        default: "en",
+      },
+      screenMode: {
+        type: String,
+        enum: ["light", "dark"],
+        default: "light",
+      },
+    },
+
+    //  SECURITY OBJECT
+    security: {
+      biometric: {
+        type: Boolean,
+        default: false,
+      },
+      passcode: {
+        type: Boolean,
+        default: false,
+      },
+    },
   },
   { timestamps: true }
 );
