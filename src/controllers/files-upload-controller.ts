@@ -28,8 +28,8 @@ export const fileUpload = asyncHandler(async (req: any, res: any) => {
       success: true,
       message: "File uploaded successfully",
       data: {
-        filesPublicId: uploadResult.public_id,
-        filesUrl: uploadResult.secure_url,
+        filePublicId: uploadResult.public_id,
+        fileUrl: uploadResult.secure_url,
       },
     });
   } catch (error: any) {

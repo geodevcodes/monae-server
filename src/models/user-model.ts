@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       validate: {
         validator: function (v: string) {
+          if (!v) return true; // allow empty value
           return /^(\+?\d{1,4}[-.\s]?)?(\d{10,12})$/.test(v);
         },
         message: (props: any) => `${props.value} is not a valid phone number!`,
@@ -73,7 +74,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    
+
     // PERSONALISATION OBJECT
     personalisation: {
       language: {

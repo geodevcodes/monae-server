@@ -55,7 +55,7 @@ export const getUsers = asyncHandler(async (req: any, res: any) => {
 export const getUser = asyncHandler(async (req: any, res: any) => {
   try {
     const userId = req.userId;
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       return res
         .status(404)
@@ -78,7 +78,7 @@ export const updateUser = asyncHandler(async (req: any, res: any) => {
     const userId = req.userId;
 
     // Find user by ID
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       res.status(404);
       throw new Error(`Cannot find user with ID ${userId}`);

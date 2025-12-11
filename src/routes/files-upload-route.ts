@@ -8,9 +8,9 @@ import { verifyToken } from "../middlewares/verify-token";
 const router = require("express").Router();
 
 // Upload a single file
-router.post("/", verifyToken, upload.single("file"), fileUpload);
+router.post("/file", verifyToken, upload.single("file"), fileUpload);
 
 // Upload multiple files
-router.post("/", verifyToken, upload.array("files"), filesUpload);
+router.post("/files", verifyToken, upload.array("files"), filesUpload);
 
 export default router;
