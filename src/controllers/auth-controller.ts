@@ -40,7 +40,7 @@ export const createUser = asyncHandler(async (req: any, res: any) => {
       isVerified: false,
     });
 
-    await sendVerificationEmail(email, email, verificationToken);
+    await sendVerificationEmail(email, `Monae`, verificationToken);
 
     return res.status(200).json({
       success: true,
