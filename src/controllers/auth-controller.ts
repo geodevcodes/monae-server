@@ -258,8 +258,14 @@ export const googleLoginUser = asyncHandler(async (req: any, res: any) => {
       await user.save();
     }
 
-    const token = jwt.sign({ userId: user._id, role: user.role }, ACCESS_TOKEN_SECRET, {
-      expiresIn: "1h",
+    const accessToken = jwt.sign(
+      { userId: user._id, role: user.role },
+      ACCESS_TOKEN_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    const refreshToken = jwt.sign({ userId: user._id }, REFRESH_TOKEN_SECRET, {
+      expiresIn: "30d",
     });
 
     return res.status(200).json({
@@ -271,7 +277,8 @@ export const googleLoginUser = asyncHandler(async (req: any, res: any) => {
         avatarImage: user.avatarImage,
         role: user.role,
       },
-      token,
+      accessToken,
+      refreshToken,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -280,7 +287,6 @@ export const googleLoginUser = asyncHandler(async (req: any, res: any) => {
     });
   }
 });
-
 
 export const refreshAccessToken = asyncHandler(async (req: any, res: any) => {
   const { refreshToken } = req.body;
