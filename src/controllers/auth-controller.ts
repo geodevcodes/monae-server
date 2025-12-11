@@ -10,7 +10,8 @@ const {
   sendResetSuccessEmail,
 } = require("../nodemailer/emails");
 
-const SECRET_KEY = process.env.SECRET_KEY!;
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET!;
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET!;
 
 // -------------------- REGISTER USER --------------------
 export const createUser = asyncHandler(async (req: any, res: any) => {
@@ -148,8 +149,14 @@ export const loginUser = asyncHandler(async (req: any, res: any) => {
     if (!isPasswordValid)
       return res.status(401).json({ error: "Invalid credentials" });
 
-    const token = jwt.sign({ userId: user._id, role: user.role }, SECRET_KEY, {
-      expiresIn: "1h",
+    const accessToken = jwt.sign(
+      { userId: user._id, role: user.role },
+      ACCESS_TOKEN_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    const refreshToken = jwt.sign({ userId: user._id }, REFRESH_TOKEN_SECRET, {
+      expiresIn: "30d",
     });
 
     return res.status(200).json({
@@ -160,7 +167,8 @@ export const loginUser = asyncHandler(async (req: any, res: any) => {
         email: user.email,
         role: user.role,
       },
-      token,
+      accessToken,
+      refreshToken,
     });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
@@ -250,7 +258,7 @@ export const googleLoginUser = asyncHandler(async (req: any, res: any) => {
       await user.save();
     }
 
-    const token = jwt.sign({ userId: user._id, role: user.role }, SECRET_KEY, {
+    const token = jwt.sign({ userId: user._id, role: user.role }, ACCESS_TOKEN_SECRET, {
       expiresIn: "1h",
     });
 
@@ -272,3 +280,37 @@ export const googleLoginUser = asyncHandler(async (req: any, res: any) => {
     });
   }
 });
+
+
+export const refreshAccessToken = asyncHandler(async (req: any, res: any) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Refresh token required" });
+  }
+
+  try {
+    const decoded: any = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET!
+    );
+
+    const newAccessToken = jwt.sign(
+      { userId: decoded.userId },
+      process.env.ACCESS_TOKEN_SECRET!,
+      { expiresIn: "15m" }
+    );
+
+    return res.status(200).json({
+      success: true,
+      accessToken: newAccessToken,
+    });
+  } catch (err) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Invalid refresh token" });
+  }
+});
+

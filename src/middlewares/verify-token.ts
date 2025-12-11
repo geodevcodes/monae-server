@@ -6,9 +6,16 @@ interface CustomRequest extends Request {
   userRole?: string;
 }
 
-export const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
-  const token = req.headers?.authorization?.split(" ")[1];
-  const secretKey = process.env.SECRET_KEY;
+export const verifyToken = (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const rawToken =
+    req.headers?.authorization?.split(" ")[1] || req.headers["x-access-token"];
+  const token = Array.isArray(rawToken) ? rawToken[0] : rawToken;
+
+  const secretKey = process.env.ACCESS_TOKEN_SECRET;
 
   if (!token) {
     return res.status(401).json({
@@ -18,7 +25,7 @@ export const verifyToken = (req: CustomRequest, res: Response, next: NextFunctio
   }
 
   if (!secretKey) {
-    console.error("SECRET_KEY is missing");
+    console.error("ACCESS_TOKEN_SECRET is missing");
     return res.status(500).json({ success: false, message: "Server error" });
   }
 
@@ -44,7 +51,7 @@ export const isAdminRoute = (
   next: NextFunction
 ) => {
   const token = req.headers?.authorization?.split(" ")[1];
-  const secretKey = process.env.SECRET_KEY;
+  const secretKey = process.env.ACCESS_TOKEN_SECRET;
 
   if (!token) {
     return res.status(401).json({
@@ -54,7 +61,7 @@ export const isAdminRoute = (
   }
 
   if (!secretKey) {
-    console.error("SECRET_KEY is missing");
+    console.error("ACCESS_TOKEN_SECRET is missing");
     return res.status(500).json({ success: false, message: "Server error" });
   }
 

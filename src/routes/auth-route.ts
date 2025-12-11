@@ -7,6 +7,7 @@ import {
   loginUser,
   forgotPassword,
   resetPassword,
+  refreshAccessToken,
 } from "../controllers/auth-controller";
 
 // auth Register (Signup)
@@ -19,6 +20,9 @@ router.post("/resend-verification", resendVerificationOTP);
 
 // auth login
 router.post("/login", loginUser);
+
+// refresh Token
+router.post("/refresh", refreshAccessToken);
 
 // auth forgot password
 router.post("/forgot-password", forgotPassword);
