@@ -2,9 +2,18 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    fullName: {
+    firstName: {
       type: String,
       default: "",
+    },
+    lastName: {
+      type: String,
+      default: "",
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Nil"],
+      default: "Nil",
     },
     email: {
       type: String,
@@ -15,6 +24,17 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    phoneNumber: {
+      type: String,
+      default: "",
+      unique: true,
+      validate: {
+        validator: function (v: string) {
+          return /^(\+?\d{1,4}[-.\s]?)?(\d{10,12})$/.test(v);
+        },
+        message: (props: any) => `${props.value} is not a valid phone number!`,
+      },
     },
     role: {
       type: String,

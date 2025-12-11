@@ -13,6 +13,7 @@ import userRoute from "./routes/user-route";
 import monoRoute from "./routes/mono-route";
 import budgetRoute from "./routes/budget-route";
 import expenseRoute from "./routes/expense-route";
+import filesUploadRoute from "./routes/files-upload-route";
 
 const app = express();
 const COOKIE_SECRET_KEY = process.env.COOKIE_SECRET_KEY;
@@ -67,6 +68,7 @@ app.use("/api/v1/users", userRoute);
 app.use("/api/v1/mono", monoRoute);
 app.use("/api/v1/budgets", budgetRoute);
 app.use("/api/v1/expenses", expenseRoute);
+app.use("/api/v1/files-upload", filesUploadRoute);
 
 app.get("/", (req, res) => {
   logger.info("Hey there! welcome to monae API, monae is live!");

@@ -29,7 +29,6 @@ export const getUsers = asyncHandler(async (req: any, res: any) => {
     const endCursor = skip + users.length;
     const hasNextPage = endCursor < totalItems;
 
-
     const meta = {
       totalUsers,
       totalItems,
@@ -52,32 +51,11 @@ export const getUsers = asyncHandler(async (req: any, res: any) => {
   }
 });
 
-// get a single User
+// get a User Profile
 export const getUser = asyncHandler(async (req: any, res: any) => {
   try {
-    const { id } = req.params;
-    const user = await User.findById(id);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
-    res.status(200).json({
-      success: true,
-      message: "User Fetched Successfully",
-      data: user,
-    });
-  } catch (error: any) {
-    res.status(500);
-    throw new Error(error.message);
-  }
-});
-
-// get a User Profile
-export const getUserProfile = asyncHandler(async (req: any, res: any) => {
-  try {
-    const user = await User.findById(req.userId);
+    const userId = req.userId;
+    const user = await User.findById(userId);
     if (!user) {
       return res
         .status(404)
@@ -97,19 +75,19 @@ export const getUserProfile = asyncHandler(async (req: any, res: any) => {
 //  Update a User
 export const updateUser = asyncHandler(async (req: any, res: any) => {
   try {
-    const { id } = req.params;
+    const userId = req.userId;
 
     // Find user by ID
-    const user = await User.findById(id);
+    const user = await User.findById(userId);
     if (!user) {
       res.status(404);
-      throw new Error(`Cannot find user with ID ${id}`);
+      throw new Error(`Cannot find user with ID ${userId}`);
     }
 
     const data = { ...req.body };
 
     // Update the user
-    const updatedUser = await User.findByIdAndUpdate(id, data, {
+    const updatedUser = await User.findByIdAndUpdate(userId, data, {
       new: true,
     });
 
@@ -129,17 +107,17 @@ export const updateUser = asyncHandler(async (req: any, res: any) => {
 //  delete a User
 export const deleteUser = asyncHandler(async (req: any, res: any) => {
   try {
-    const { id } = req.params;
+    const userId = req.userId;
 
     // Find the user by ID
-    const user = await User.findById(id);
+    const user = await User.findById(userId);
 
     if (!user) {
       res.status(404);
-      throw new Error(`cannot find any user with ID ${id}`);
+      throw new Error(`cannot find any user with ID ${userId}`);
     }
     // Delete the user from the database
-    await User.findByIdAndDelete(id);
+    await User.findByIdAndDelete(userId);
 
     res.status(200).json({
       success: true,
