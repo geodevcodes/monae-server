@@ -8,6 +8,7 @@ import {
   forgotPassword,
   resetPassword,
   refreshAccessToken,
+  logoutUser,
 } from "../controllers/auth-controller";
 
 // auth Register (Signup)
@@ -32,5 +33,8 @@ router.post("/reset-password/:token", resetPassword);
 
 // google auth login
 router.post("/google-login", googleLoginUser);
+
+// Logout user
+router.post("/logout", logoutUser);
 
 export default router;

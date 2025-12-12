@@ -320,3 +320,15 @@ export const refreshAccessToken = asyncHandler(async (req: any, res: any) => {
   }
 });
 
+export const logoutUser = asyncHandler(async (req: any, res: any) => {
+  try {
+    req.session = null;
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Server error" });
+  }
+});
