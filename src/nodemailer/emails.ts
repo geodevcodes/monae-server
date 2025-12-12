@@ -4,20 +4,20 @@ import {
   PASSWORD_RESET_REQUEST_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,
 } from "./emailTemplates";
+import { generateCodeBoxes } from "./generateCodeBoxes";
 import { createTransporter } from "./sendMail";
 
 // ===================== VERIFICATION EMAIL =====================
 export const sendVerificationEmail = async (
   email: string,
   name: string,
-  verificationToken: string
+  verificationCode: string
 ): Promise<void> => {
   const recipient = email;
 
-  const emailBody = VERIFICATION_EMAIL_TEMPLATE.replace(
-    "{verificationCode}",
-    verificationToken
-  ).replace("{name}", name);
+  const emailBody = VERIFICATION_EMAIL_TEMPLATE.replace("{{name}}", name)
+    .replace("{{verificationCode}}", verificationCode)
+    .replace("{{codeBoxes}}", generateCodeBoxes(verificationCode));
 
   const transporter = createTransporter();
 
@@ -31,13 +31,6 @@ export const sendVerificationEmail = async (
       to: recipient,
       subject: "Confirm Your Monae Account",
       html: emailBody,
-      text: `Hello ${name}, 
-Thank you for creating your Monae account. To complete your registration, please use this verification code: ${verificationToken}
-
-This code will expire in 15 minutes.
-
-Best regards,
-The Monae Team`,
     };
 
     const info = await transporter.sendMail(mailOptions);
@@ -61,7 +54,7 @@ export const sendWelcomeEmail = async (
     const emailBody = WELCOME_EMAIL_TEMPLATE.replace(
       "{userEmail}",
       email
-    ).replace("{name}", name);
+    ).replace("{name}", email);
 
     const transporter = createTransporter();
     await transporter.verify();

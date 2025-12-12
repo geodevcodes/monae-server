@@ -14,7 +14,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
                 <tr>
                   <td style="display: flex; align-items: center;">
                       <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765461163/monae/icon_txj1ag.png" alt="Monae Logo" style="height: 80px; width: auto; display: block;">
-                      <h1 style="margin-left: -10px; font-size: 24px; font-weight: 700; color: #000000;">Monae</h1>
+                      <h1 style="margin-left: -10px; margin-top: 24px;  font-size: 24px; font-weight: 700; color: #000000;">Monae</h1>
                   </td>
                   <td style="text-align: right;">
                     <a href="https://www.linkedin.com/" style="display: inline-block; margin-left: 15px;"><img src="https://img.icons8.com/ios-filled/50/6b7280/linkedin.png" alt="LinkedIn" style="width: 24px; height: 24px;"></a>
@@ -37,32 +37,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
               <!-- Verification Code Boxes -->
               <table role="presentation" style="border-collapse: collapse; margin: 0 0 30px 0;">
                 <tr>
-                  <td style="padding: 0 6px 0 0;">
-                    <div style="width: 70px; height: 80px; border: 2px solid #5B6EF5; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-color: #F8F9FF;">
-                      <span style="font-size: 48px; font-weight: 700; color: #000000; line-height: 80px; display: block; text-align: center;">4</span>
-                    </div>
-                  </td>
-                  <td style="padding: 0 6px;">
-                    <div style="width: 70px; height: 80px; border: 2px solid #5B6EF5; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-color: #F8F9FF;">
-                      <span style="font-size: 48px; font-weight: 700; color: #000000; line-height: 80px; display: block; text-align: center;">4</span>
-                    </div>
-                  </td>
-                  <td style="padding: 0 6px;">
-                    <div style="width: 70px; height: 80px; border: 2px solid #5B6EF5; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-color: #F8F9FF;">
-                      <span style="font-size: 48px; font-weight: 700; color: #000000; line-height: 80px; display: block; text-align: center;">8</span>
-                    </div>
-                  </td>
-                  <td style="padding: 0 6px;">
-                    <div style="width: 70px; height: 80px; border: 2px solid #5B6EF5; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-color: #F8F9FF;">
-                      <span style="font-size: 48px; font-weight: 700; color: #000000; line-height: 80px; display: block; text-align: center;">6</span>
-                    </div>
-                  </td>
-                  <td style="padding: 0 6px;">
-                    <div style="width: 70px; height: 80px; border: 2px solid #5B6EF5; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-color: #F8F9FF;">
-                      <span style="font-size: 48px; font-weight: 700; color: #000000; line-height: 80px; display: block; text-align: center;">6</span>
-                    </div>
-                  </td>
-                  
+                  {{codeBoxes}}
                 </tr>
               </table>
               
@@ -71,7 +46,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
               <p style="margin: 0 0 35px 0; font-size: 16px; color: #000000; line-height: 1.6;">If you didn't request this, you can ignore the email.</p>
               
               <!-- Copy Code Button -->
-              <a href="{verificationCode}" style="display: inline-block; background-color: #5B6EF5; color: #ffffff; text-decoration: none; padding: 16px 50px; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 40px;">Copy Code</a>
+              <button style="display: inline-block; background-color: #5B6EF5; color: #ffffff; text-decoration: none; padding: 16px 50px; border-radius: 8px; border: none; font-size: 16px; font-weight: 600; margin-bottom: 40px;">{{verificationCode}}</button>
               
               <p style="margin: 40px 0 5px 0; font-size: 16px; color: #000000; line-height: 1.6;">Thanks,</p>
               <p style="margin: 0 0 50px 0; font-size: 16px; font-weight: 700; color: #000000; line-height: 1.6;">The Monae Team</p>
@@ -82,14 +57,10 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
               <table role="presentation" style="border-collapse: collapse; margin-bottom: 40px;">
                 <tr>
                   <td style="padding-right: 15px;">
-                    <a href="#" style="display: inline-block;">
                       <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
-                    </a>
                   </td>
                   <td>
-                    <a href="#" style="display: inline-block;">
                       <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
-                    </a>
                   </td>
                 </tr>
               </table>
@@ -132,7 +103,7 @@ export const WELCOME_EMAIL_TEMPLATE = `
                 <tr>
                   <td style="display: flex; align-items: center;">
                       <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765461163/monae/icon_txj1ag.png" alt="Monae Logo" style="height: 80px; width: auto; display: block;">
-                      <h1 style="margin-left: -10px; font-size: 24px; font-weight: 700; color: #000000;">Monae</h1>
+                      <h1 style="margin-left: -10px; margin-top: 24px;  font-size: 24px; font-weight: 700; color: #000000;">Monae</h1>
                   </td>
                   <td style="text-align: right;">
                     <a href="https://www.linkedin.com/" style="display: inline-block; margin-left: 15px;"><img src="https://img.icons8.com/ios-filled/50/6b7280/linkedin.png" alt="LinkedIn" style="width: 24px; height: 24px;"></a>
@@ -161,14 +132,10 @@ export const WELCOME_EMAIL_TEMPLATE = `
               <table role="presentation" style="border-collapse: collapse; margin-bottom: 40px;">
                 <tr>
                   <td style="padding-right: 15px;">
-                    <a href="#" style="display: inline-block;">
                       <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
-                    </a>
                   </td>
                   <td>
-                    <a href="#" style="display: inline-block;">
                       <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
-                    </a>
                   </td>
                 </tr>
               </table>
@@ -195,7 +162,6 @@ export const WELCOME_EMAIL_TEMPLATE = `
 </html>
 `;
 
-
 export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 <!DOCTYPE html>
 <html>
@@ -210,7 +176,6 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 </html>
 `;
 
-
 export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 <!DOCTYPE html>
 <html>
@@ -224,7 +189,6 @@ export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 </body>
 </html>
 `;
-
 
 module.exports = {
   VERIFICATION_EMAIL_TEMPLATE,
