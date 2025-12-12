@@ -21,7 +21,7 @@ export const fileUpload = asyncHandler(async (req: any, res: any) => {
 
     const uploadResult = await cloudinary.uploader.upload(file, {
       resource_type: "auto",
-      upload_preset: "monae",
+      upload_preset: "monae-files",
     });
 
     res.status(200).json({
