@@ -5,22 +5,23 @@ import {
   deleteMonoAccount,
   getOrCreateCustomer,
 } from "../controllers/mono-controller";
+import { verifyToken } from "../middlewares/verify-token";
 
 const router = require("express").Router();
 
 // Create a Code Exchange
-router.post("/exchange", exchangeCode);
+router.post("/exchange", verifyToken, exchangeCode);
 
 // New route
-router.get("/customer/:userId", getOrCreateCustomer);
+router.get("/customer", verifyToken, getOrCreateCustomer);
 
 //fetch an account details
-router.get("/account/:id", getAccountDetails);
+router.get("/account/:id", verifyToken, getAccountDetails);
 
 //Update account transactions
-router.get("/account/:id/transactions", getTransactions);
+router.get("/account/:id/transactions", verifyToken, getTransactions);
 
 //Delete a mono account
-router.delete("/:id", deleteMonoAccount);
+router.delete("/:id", verifyToken, deleteMonoAccount);
 
 export default router;

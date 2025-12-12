@@ -11,7 +11,8 @@ const MONO_BASE = "https://api.withmono.com/v2";
 
 // -------------------- EXCHANGE CODE --------------------
 export const exchangeCode = asyncHandler(async (req: any, res: any) => {
-  const { code, userId } = req.body;
+  const userId = req.userId;
+  const { code } = req.body;
   if (!code || !userId) {
     res.status(400);
     throw new Error("code and userId are required");
@@ -89,7 +90,7 @@ export const exchangeCode = asyncHandler(async (req: any, res: any) => {
 
 // -------------------- GET OR CREATE CUSTOMER --------------------
 export const getOrCreateCustomer = asyncHandler(async (req: any, res: any) => {
-  const { userId } = req.params;
+  const userId = req.userId;
   if (!userId) {
     res.status(400);
     throw new Error("userId is required");
