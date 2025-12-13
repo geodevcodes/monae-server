@@ -28,10 +28,12 @@ const userSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
       unique: true,
-      sparse: true,
+      sparse: true, // allows multiple nulls
+      required: false,
+      trim: true,
       validate: {
         validator: function (v: string) {
-          if (!v) return true;
+          if (!v) return true; // skip validation if no value is provided
           return /^(\+?\d{1,4}[-.\s]?)?(\d{10,12})$/.test(v);
         },
         message: (props: any) => `${props.value} is not a valid phone number!`,

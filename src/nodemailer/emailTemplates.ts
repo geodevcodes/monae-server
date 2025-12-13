@@ -31,7 +31,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
           <tr>
             <td style="padding: 50px 40px;">
               <h1 style="margin: 0 0 30px 0; font-size: 24px; font-weight: 700; color: #000000; line-height: 1.2;">Verify Your Email</h1>
-              <p style="margin: 0 0 25px 0; font-size: 16px; color: #000000; line-height: 1.6;">Hi {name},</p>
+              <p style="margin: 0 0 25px 0; font-size: 16px; color: #000000; line-height: 1.6;">Hi {{name}},</p>
               <p style="margin: 0 0 30px 0; font-size: 16px; color: #000000; line-height: 1.6;">Welcome to Monae. Before you continue, please verify your email so we can keep your account secure. Here's your Monae verification code:</p>
               
               <!-- Verification Code Boxes -->
@@ -57,10 +57,10 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
               <table role="presentation" style="border-collapse: collapse; margin-bottom: 40px;">
                 <tr>
                   <td style="padding-right: 15px;">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
+                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765621241/monae/Screenshot_2025-12-13_at_11.19.32_auifei.png" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
                   </td>
                   <td>
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
+                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765621241/monae/Screenshot_2025-12-13_at_11.20.06_f83fcn.png" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
                   </td>
                 </tr>
               </table>
@@ -132,10 +132,10 @@ export const WELCOME_EMAIL_TEMPLATE = `
               <table role="presentation" style="border-collapse: collapse; margin-bottom: 40px;">
                 <tr>
                   <td style="padding-right: 15px;">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
+                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765621241/monae/Screenshot_2025-12-13_at_11.19.32_auifei.png" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
                   </td>
                   <td>
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
+                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765621241/monae/Screenshot_2025-12-13_at_11.20.06_f83fcn.png" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
                   </td>
                 </tr>
               </table>

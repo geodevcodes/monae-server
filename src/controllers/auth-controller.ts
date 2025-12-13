@@ -20,12 +20,12 @@ export const createUser = asyncHandler(async (req: any, res: any) => {
   const checkEmail = await User.findOne({ email });
   if (checkEmail) {
     res.status(401);
-    throw new Error("Email already exists"); 
+    throw new Error("Email already exists");
   }
 
   if (!password) {
     res.status(400);
-    throw new Error("Password is required"); 
+    throw new Error("Password is required");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -85,33 +85,37 @@ export const verifyEmail = asyncHandler(async (req: any, res: any) => {
 });
 
 // -------------------- RESEND VERIFICATION --------------------
-export const resendVerificationOTP = asyncHandler(async (req: any, res: any) => {
-  const { email } = req.body;
+export const resendVerificationOTP = asyncHandler(
+  async (req: any, res: any) => {
+    const { email } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    if (user.isVerified) {
+      res.status(400);
+      throw new Error("User is already verified");
+    }
+
+    const newVerificationToken = Math.floor(
+      10000 + Math.random() * 90000
+    ).toString();
+
+    user.verificationToken = newVerificationToken;
+    user.verificationTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    await user.save();
+
+    await sendVerificationEmail(user.email, "Monae", newVerificationToken);
+
+    res.status(200).json({
+      success: true,
+      message: `New verification code sent to ${email}`,
+    });
   }
-
-  if (user.isVerified) {
-    res.status(400);
-    throw new Error("User is already verified");
-  }
-
-  const newVerificationToken = Math.floor(10000 + Math.random() * 90000).toString();
-
-  user.verificationToken = newVerificationToken;
-  user.verificationTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
-  await user.save();
-
-  await sendVerificationEmail(user.email, "Monae", newVerificationToken);
-
-  res.status(200).json({
-    success: true,
-    message: `New verification code sent to ${email}`,
-  });
-});
+);
 
 // -------------------- LOGIN --------------------
 export const loginUser = asyncHandler(async (req: any, res: any) => {
@@ -124,8 +128,23 @@ export const loginUser = asyncHandler(async (req: any, res: any) => {
   }
 
   if (!user.isVerified) {
-    res.status(401);
-    throw new Error("Verify your email to continue");
+    // Generate a new verification token
+    const newVerificationToken = Math.floor(
+      10000 + Math.random() * 90000
+    ).toString();
+    user.verificationToken = newVerificationToken;
+    user.verificationTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    await user.save();
+
+    // Send verification email
+    await sendVerificationEmail(user.email, "Monae", newVerificationToken);
+
+    res.status(401).json({
+      success: false,
+      message:
+        "Verify your email to continue. A new verification code has been sent to your email.",
+    });
+    return;
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -134,8 +153,14 @@ export const loginUser = asyncHandler(async (req: any, res: any) => {
     throw new Error("Invalid credentials");
   }
 
-  const accessToken = jwt.sign({ userId: user._id, role: user.role }, ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
-  const refreshToken = jwt.sign({ userId: user._id }, REFRESH_TOKEN_SECRET, { expiresIn: "30d" });
+  const accessToken = jwt.sign(
+    { userId: user._id, role: user.role },
+    ACCESS_TOKEN_SECRET,
+    { expiresIn: "15m" }
+  );
+  const refreshToken = jwt.sign({ userId: user._id }, REFRESH_TOKEN_SECRET, {
+    expiresIn: "30d",
+  });
 
   res.status(200).json({
     success: true,
@@ -222,8 +247,14 @@ export const googleLoginUser = asyncHandler(async (req: any, res: any) => {
     await user.save();
   }
 
-  const accessToken = jwt.sign({ userId: user._id, role: user.role }, ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
-  const refreshToken = jwt.sign({ userId: user._id }, REFRESH_TOKEN_SECRET, { expiresIn: "30d" });
+  const accessToken = jwt.sign(
+    { userId: user._id, role: user.role },
+    ACCESS_TOKEN_SECRET,
+    { expiresIn: "15m" }
+  );
+  const refreshToken = jwt.sign({ userId: user._id }, REFRESH_TOKEN_SECRET, {
+    expiresIn: "30d",
+  });
 
   res.status(200).json({
     success: true,
@@ -249,7 +280,11 @@ export const refreshAccessToken = asyncHandler(async (req: any, res: any) => {
   }
 
   const decoded: any = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
-  const newAccessToken = jwt.sign({ userId: decoded.userId }, ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+  const newAccessToken = jwt.sign(
+    { userId: decoded.userId },
+    ACCESS_TOKEN_SECRET,
+    { expiresIn: "15m" }
+  );
 
   res.status(200).json({
     success: true,
