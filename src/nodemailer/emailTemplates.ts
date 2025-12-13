@@ -57,10 +57,10 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
               <table role="presentation" style="border-collapse: collapse; margin-bottom: 40px;">
                 <tr>
                   <td style="padding-right: 15px;">
-                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765621241/monae/Screenshot_2025-12-13_at_11.19.32_auifei.png" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
+                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765641173/monae/google-play_hv6ohh.png" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
                   </td>
                   <td>
-                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765621241/monae/Screenshot_2025-12-13_at_11.20.06_f83fcn.png" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
+                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765641172/monae/app-store_bka4d7.png" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
                   </td>
                 </tr>
               </table>
@@ -132,10 +132,10 @@ export const WELCOME_EMAIL_TEMPLATE = `
               <table role="presentation" style="border-collapse: collapse; margin-bottom: 40px;">
                 <tr>
                   <td style="padding-right: 15px;">
-                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765621241/monae/Screenshot_2025-12-13_at_11.19.32_auifei.png" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
+                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765641173/monae/google-play_hv6ohh.png" alt="Get it on Google Play" style="height: 30px; width: auto; display: block;">
                   </td>
                   <td>
-                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765621241/monae/Screenshot_2025-12-13_at_11.20.06_f83fcn.png" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
+                      <img src="https://res.cloudinary.com/dgfjxhoae/image/upload/v1765641172/monae/app-store_bka4d7.png" alt="Download on the App Store" style="height: 30px; width: auto; display: block;">
                   </td>
                 </tr>
               </table>
