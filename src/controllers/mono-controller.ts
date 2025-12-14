@@ -13,9 +13,18 @@ const MONO_BASE = "https://api.withmono.com/v2";
 export const exchangeCode = asyncHandler(async (req: any, res: any) => {
   const userId = req.userId;
   const { code } = req.body;
-  if (!code || !userId) {
-    res.status(400);
-    throw new Error("code and userId are required");
+  if (!code) {
+    return res.status(400).json({
+      success: false,
+      message: "Mono auth code is required",
+    });
+  }
+
+  if (!userId) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
   }
 
   // Step 1: Check if user already has a Mono customer
