@@ -2,17 +2,15 @@ import axios from "axios";
 import MonoModel from "../models/mono-model";
 import asyncHandler from "express-async-handler";
 
-if (!process.env.MONO_SECRET_KEY) {
-  throw new Error("MONO_SECRET_KEY is missing");
-}
-
-const MONO_SECRET = process.env.MONO_SECRET_KEY;
+const MONO_SECRET = process.env.MONO_SECRET_KEY!;
 const MONO_BASE = "https://api.withmono.com/v2";
 
 // -------------------- EXCHANGE CODE --------------------
 export const exchangeCode = asyncHandler(async (req: any, res: any) => {
   const userId = req.userId;
   const { code } = req.body;
+
+  /* ---------------- VALIDATION ---------------- */
   if (!code) {
     return res.status(400).json({
       success: false,
@@ -28,12 +26,12 @@ export const exchangeCode = asyncHandler(async (req: any, res: any) => {
   }
 
   // Step 1: Check if user already has a Mono customer
-  let account = await MonoModel.findOne({ userId });
+  let exchangeResponse;
 
-  if (!account?.monoCustomerId) {
-    const customerResponse = await axios.post(
-      `${MONO_BASE}/customers`,
-      { name: "User " + userId },
+  try {
+    exchangeResponse = await axios.post(
+      `${MONO_BASE}/accounts/auth`,
+      { code },
       {
         headers: {
           accept: "application/json",
@@ -42,55 +40,45 @@ export const exchangeCode = asyncHandler(async (req: any, res: any) => {
         },
       }
     );
+  } catch (err: any) {
+    console.error("Mono exchange error:", err.response?.data);
 
-    const customer = customerResponse.data?.data;
-    if (!customer?.id) {
-      res.status(502);
-      throw new Error("Failed to create Mono customer");
-    }
-
-    account = await MonoModel.findOneAndUpdate(
-      { userId },
-      { monoCustomerId: customer.id, userId },
-      { new: true, upsert: true }
-    );
+    return res.status(400).json({
+      success: false,
+      message: err.response?.data?.message || "Mono exchange failed",
+    });
   }
 
-  // Step 2: Exchange the code for Mono account
-  const exchangeResponse = await axios.post(
-    `${MONO_BASE}/accounts/auth`,
-    { code },
-    {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        "mono-sec-key": MONO_SECRET,
-      },
-    }
-  );
+  const monoData = exchangeResponse.data?.data;
 
-  const data = exchangeResponse.data?.data;
-  const monoAccountId = data?.id;
-  const monoCustomerId = data?.customer?.id;
+  console.log("MONO AUTH RESPONSE:", monoData);
 
-  if (!monoAccountId || !monoCustomerId) {
-    res.status(502);
-    throw new Error("Invalid Mono response during code exchange");
+  /* ---------------- EXTRACT SAFELY ---------------- */
+  const monoAccountId = monoData?.id;
+
+  if (!monoAccountId) {
+    return res.status(502).json({
+      success: false,
+      message: "Mono account ID missing",
+    });
   }
 
-  // Step 3: Save Mono account info
+  const monoCustomerId = monoData?.customer?.id || monoData?.customer || null;
+
+  /* ---------------- SAVE ACCOUNT ---------------- */
   const savedAccount = await MonoModel.findOneAndUpdate(
     { monoAccountId },
     {
       monoAccountId,
       monoCustomerId,
       userId,
-      institution: data?.meta?.data?.institution || "",
+      institution: monoData?.meta?.data?.institution || "",
     },
     { new: true, upsert: true }
   );
 
-  res.json({
+  /* ---------------- SUCCESS ---------------- */
+  return res.status(200).json({
     success: true,
     message: "Bank connected successfully",
     account: savedAccount,
