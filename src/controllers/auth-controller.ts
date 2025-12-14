@@ -147,6 +147,18 @@ export const loginUser = asyncHandler(async (req: any, res: any) => {
     return;
   }
 
+  if (!password) {
+    res.status(400);
+    throw new Error("Password is required");
+  }
+
+  if (!user.password) {
+    res.status(401);
+    throw new Error(
+      "This account uses Google sign-in. Please sign in with Google."
+    );
+  }
+
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     res.status(401);

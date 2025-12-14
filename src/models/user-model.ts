@@ -23,7 +23,9 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function () {
+        return !this.googleId; // Password is required only if googleId and githubId is not present
+      },
     },
     phoneNumber: {
       type: String,
