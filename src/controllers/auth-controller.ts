@@ -230,15 +230,16 @@ export const resetPassword = asyncHandler(async (req: any, res: any) => {
 
 // -------------------- GOOGLE LOGIN --------------------
 export const googleLoginUser = asyncHandler(async (req: any, res: any) => {
-  const { email, lastName, picture, googleId } = req.body;
+  const { email, firstName, lastName, avatarImage, googleId } = req.body;
 
   let user = await User.findOne({ email });
 
   if (!user) {
     user = await User.create({
+      firstName,
       lastName,
       email,
-      avatarImage: picture,
+      avatarImage,
       googleId,
       isVerified: true,
     });
