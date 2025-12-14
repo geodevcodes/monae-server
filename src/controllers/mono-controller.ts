@@ -60,7 +60,7 @@ export const exchangeCode = asyncHandler(async (req: any, res: any) => {
     );
 
     const responseData = accountDetailsResponse.data?.data;
-    
+
     const monoCustomerId = responseData?.customer?.id || null;
     const accountName = responseData?.account?.name || "";
     const accountNumber = responseData?.account?.account_number || "";
@@ -195,6 +195,49 @@ export const getTransactions = asyncHandler(async (req: any, res: any) => {
   });
 });
 
+// -------------------- GET ALL CONNECTED BANKS --------------------
+export const getConnectedBanks = asyncHandler(async (req: any, res: any) => {
+  const userId = req.userId;
+
+  if (!userId) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
+
+  const banks = await MonoModel.find({ userId }).sort({ createdAt: -1 });
+  const bankList = await fetchBankLogos();
+
+  const formattedBanks = banks.map((bank) => {
+    const matched = bankList.find(
+      (b: any) => String(b.code) === String(bank.bankCode) // match Mono bankCode to API code
+    );
+
+    return {
+      id: bank._id,
+      monoAccountId: bank.monoAccountId,
+      institution: bank.institution,
+      accountName: bank.accountName,
+      accountNumber: bank.accountNumber,
+      balance: bank.balance,
+      currency: bank.currency,
+      accountType: bank.accountType,
+      bankCode: bank.bankCode,
+      logoUrl:
+        matched?.logo ?? "https://nigerianbanks.xyz/logo/default-image.png", // fallback
+      createdAt: bank.createdAt,
+      updatedAt: bank.updatedAt,
+    };
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Connected banks fetched successfully",
+    data: formattedBanks,
+  });
+});
+
 // -------------------- DELETE MONO ACCOUNT --------------------
 export const deleteMonoAccount = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
@@ -215,3 +258,20 @@ export const deleteMonoAccount = asyncHandler(async (req: any, res: any) => {
     message: "Mono account deleted",
   });
 });
+
+// FETCH BANKS LOGOS HANDLER
+let bankLogoCache: any[] = [];
+
+// Fetch the Nigerian banks with logos (cache in memory)
+async function fetchBankLogos() {
+  if (bankLogoCache.length > 0) return bankLogoCache;
+
+  try {
+    const response = await axios.get("https://nigerianbanks.xyz");
+    bankLogoCache = response.data;
+    return bankLogoCache;
+  } catch (err) {
+    console.error("Failed to fetch bank logos:", err);
+    return [];
+  }
+}
